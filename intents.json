@@ -8,21 +8,21 @@
     {
       "tag":"create note",
       "patterns": ["i want you to create a note","create a note","create a new note","new note"],
-      "response": ""
+      "response": [""]
     },
     {
       "tag": "add todo",
       "patterns": ["add to my todo list","i want to add a todo","add new todo","new item on my todo"],
-      "response": ""
+      "response": [""]
     },
     {
       "tag": "show todo",
       "patterns": ["show todos","what is on my todo","where is my todo"],
-      "response": ""
+      "response": [""]
     },{
       "tag": "goodbye",
       "patterns": ["goodbye","bye","have a nice time","quit","shutdown","i want to quit"],
-      "response": "goodbye"
+      "response": ["goodbye"]
     }
   ]
 }
