@@ -14,6 +14,11 @@
       "tag": "add todo",
       "patterns": ["add to my todo list","i want to add a todo","add new todo","new item on my todo"],
       "response": ""
+    },
+    {
+      "tag": "show todo",
+      "patterns": ["show todos","what is on my todo","where is my todo"],
+      "response": ""
     }
   ]
 }
