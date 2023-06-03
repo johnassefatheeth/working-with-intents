@@ -12,7 +12,8 @@
     },
     {
       "tag": "add todo",
-      "patterns"
+      "patterns": ["add to my todo list","i want to add a todo","add new todo","new item on my todo"],
+      "response": ""
     }
   ]
 }
