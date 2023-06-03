@@ -1,0 +1,12 @@
+{
+  "intetnts": [
+    {
+      "tag": "greeting",
+      "patterns": ["hi there","hi","hello","what's up","good morning","good afternoon","how are you"],
+      "responses": ["hello sir","hi to you too","hello , what can i hepl you today"]
+    },
+    {
+      "tag"
+    }
+  ]
+}
