@@ -1,5 +1,5 @@
 from neuralintetns import GenericAssistant
-import speach_reognition
+import SpeechRecognition
 import pyttsx3
 import sys
 
