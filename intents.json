@@ -19,6 +19,10 @@
       "tag": "show todo",
       "patterns": ["show todos","what is on my todo","where is my todo"],
       "response": ""
+    },{
+      "tag": "goodbye",
+      "patterns": ["goodbye","bye","have a nice time","quit","shutdown","i want to quit"],
+      "response": "goodbye"
     }
   ]
 }
