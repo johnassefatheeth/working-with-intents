@@ -7,7 +7,12 @@
     },
     {
       "tag":"create note",
-      "patterns": []
+      "patterns": ["i want you to create a note","create a note","create a new note","new note"],
+      "response": ""
+    },
+    {
+      "tag": "add todo",
+      "patterns"
     }
   ]
 }
