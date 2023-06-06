@@ -1,15 +1,16 @@
 import speech_recognition
 from neuralintents import GenericAssistant
 import pyttsx3
+import pyaudio
 import sys
-
 
 recognizer = speech_recognition.Recognizer()
 
 speaker = pyttsx3.init()
-speaker.setProperty('rate', 150 )
+speaker.setProperty('rate', 150)
 
-todo_list=['go home','go church','record video']
+todo_list = ['go home', 'go church', 'record video']
+
 
 def create_note():
     global recognizer
@@ -17,34 +18,34 @@ def create_note():
     speaker.say("what should i write on your note?")
     speaker.runAndWait()
 
-    done= False
+    done = False
 
     while not done:
         try:
 
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audio = recognizer.listen(mic)
+            with speech_recognition.Microphone() as mic2:
+                recognizer.adjust_for_ambient_noise(mic2, duration=0.2)
+                audios = recognizer.listen(mic2)
 
-                note =recognizer.recognize_google(audio)
-                note =note.lower()
+                note = recognizer.recognize_google(audios)
+                note = note.lower()
 
                 speaker.say("choose a filename")
                 speaker.runAndWait()
 
-                recognizer.adjust_for_ambient_noise(mic,duration=0.2)
-                audio =recognizer.listen(mic)
+                recognizer.adjust_for_ambient_noise(mic2, duration=0.2)
+                audios = recognizer.listen(mic2)
 
-                filename= recognizer.recognize_google(audio)
-                filename=filename.lower()
+                filename = recognizer.recognize_google(audios)
+                filename = filename.lower()
 
-            with open(filename,'w') as f:
+            with open(filename, 'w') as f:
                 f.write(note)
                 done = True
                 speaker.say(f"successfully opened file with the name {filename}")
                 speaker.runAndWait()
         except speech_recognition.UnknownValueError:
-            recognizer= speech_recognition.Recognizer()
+            recognizer = speech_recognition.Recognizer()
             speaker.say("come again?")
             speaker.runAndWait()
 
@@ -55,27 +56,28 @@ def to_do():
     speaker.say("what would you like to add?")
     speaker.runAndWait()
 
-    done=False
+    done = False
 
     while not done:
         try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audio= recognizer.listen(mic)
+            with speech_recognition.Microphone() as mic3:
+                recognizer.adjust_for_ambient_noise(mic3, duration=0.2)
+                audio2 = recognizer.listen(mic3)
 
-                item=    recognizer.recognize_google(audio)
-                item=item.lower()
+                item = recognizer.recognize_google(audio2)
+                item = item.lower()
 
                 todo_list.append(item)
-                done=True
+                done = True
 
                 speaker.say(f"{item} added to your list!")
                 speaker.runAndWait()
 
         except speech_recognition.UnknownValueError:
-            recognizer= speech_recognition.Recognizer()
+            recognizer = speech_recognition.Recognizer()
             speaker.say("come again please")
             speaker.runAndWait()
+
 
 def show_to_do():
     speaker.say("the list is as follows")
@@ -89,7 +91,7 @@ def hello():
     speaker.runAndWait()
 
 
-def quit():
+def exitt():
     speaker.say("goodbye sir")
     speaker.runAndWait()
     sys.exit(0)
@@ -97,17 +99,17 @@ def quit():
 
 mappings = {
     "greeting": hello,
-    "create_note":create_note,
-    "add_todo":to_do,
+    "create_note": create_note,
+    "add_todo": to_do,
     "show_todo": show_to_do,
-    "goodbye":quit
+    "goodbye": exitt
 }
 
-
-
-assistant =GenericAssistant('intents.json', intent_methods=mappings)
+assistant = GenericAssistant('intents.json', intent_methods=mappings)
 assistant.train_model()
 
+
+assistant.save_model()
 
 while True:
     try:
@@ -121,4 +123,4 @@ while True:
         assistant.request(message)
 
     except speech_recognition.UnknownValueError:
-        recognizer= speech_recognition.Recognizer()
+        recognizer = speech_recognition.Recognizer()
