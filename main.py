@@ -49,6 +49,50 @@ def create_note():
             speaker.runAndWait()
 
 
+def to_do():
+    global recognizer
+
+    speaker.say("what would you like to add?")
+    speaker.runAndWait()
+
+    done=False
+
+    while not done:
+        try:
+            with speech_recognition.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audio= recognizer.listen(mic)
+
+                item=    recognizer.recognize_google(audio)
+                item=item.lower()
+
+                todo_list.append(item)
+                done=True
+
+                speaker.say(f"{item} added to your list!")
+                speaker.runAndWait()
+
+        except speech_recognition.UnknownValueError:
+            recognizer= speech_recognition.Recognizer()
+            speaker.say("come again please")
+            speaker.runAndWait()
+
+def show_to_do():
+    speaker.say("the list is as follows")
+    for item in todo_list:
+        speaker.say(item)
+    speaker.runAndWait()
+
+
+def hello():
+    speaker.say("what can i help you with")
+    speaker.runAndWait()
+
+
+def quit():
+
+
+
 assistant =GenericAssistant('intents.json')
 assistant.train_model()
 
