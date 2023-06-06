@@ -6,17 +6,17 @@
       "responses": ["hello sir","hi to you too","hello , what can i help you today"]
     },
     {
-      "tag":"create note",
+      "tag":"create_note",
       "patterns": ["i want you to create a note","create a note","create a new note","new note"],
       "response": [""]
     },
     {
-      "tag": "add todo",
+      "tag": "add_todo",
       "patterns": ["add to my todo list","i want to add a todo","add new todo","new item on my todo"],
       "response": [""]
     },
     {
-      "tag": "show todo",
+      "tag": "show_todo",
       "patterns": ["show todos","what is on my todo","where is my todo"],
       "response": [""]
     },{

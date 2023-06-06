@@ -90,6 +90,18 @@ def hello():
 
 
 def quit():
+    speaker.say("goodbye sir")
+    speaker.runAndWait()
+    sys.exit(0)
+
+
+mappings = {
+    "greeting": hello,
+    "create_note":create_note,
+    "add_todo":to_do,
+    "show_todo": show_to_do,
+    "goodbye":quit
+}
 
 
 
