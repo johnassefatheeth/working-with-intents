@@ -17,7 +17,7 @@
     },
     {
       "tag": "show_todo",
-      "patterns": ["show todos","what is on my todo","where is my todo"],
+      "patterns": ["show to do","what is on my to do","where is my to do"],
       "response": [""]
     },{
       "tag": "goodbye",
