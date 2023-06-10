@@ -19,7 +19,23 @@
       "tag": "show_todo",
       "patterns": ["show to do","what is on my to do","where is my to do"],
       "response": [""]
-    },{
+    },
+    {
+      "tag": "time",
+      "patterns": ["what time is it","what is the time","tell me the time","what is the hour","the time is","i want the time"],
+      "response": [""]
+    },
+    {
+      "tag": "date",
+      "patterns": ["what is today","what day is it","today is","what day is today","the date is"],
+      "response": [""]
+    },
+    {
+      "tag": "set_alarm",
+      "patterns": ["i want you to set an alarm","set alarm","schedule an alarm","what day is today","the date is"],
+      "response": [""]
+    },
+    {
       "tag": "goodbye",
       "patterns": ["goodbye","bye","have a nice time","quit","shutdown","i want to quit"],
       "response": ["goodbye"]
