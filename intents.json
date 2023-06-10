@@ -12,7 +12,7 @@
     },
     {
       "tag": "add_todo",
-      "patterns": ["add to my todo list","i want to add a todo","add new todo","new item on my todo"],
+      "patterns": ["add to my to do list","i want to add a to do","add new to do","new item on my to do"],
       "response": [""]
     },
     {
@@ -32,7 +32,12 @@
     },
     {
       "tag": "set_alarm",
-      "patterns": ["i want you to set an alarm","set alarm","schedule an alarm","what day is today","the date is"],
+      "patterns": ["i want you to set an alarm","set alarm","schedule an alarm","alarm me","set reminder","remind me"],
+      "response": [""]
+    },
+    {
+      "tag": "camera",
+      "patterns": ["open camera","start camera","camera app"],
       "response": [""]
     },
     {
