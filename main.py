@@ -218,6 +218,7 @@ mappings = {
     "time": tell_time,
     "date": tell_date,
     "set_alarm":sets_alarm,
+    "introduction":intro,
     "wiki": wikip,
     "goodbye": exitt
 }
