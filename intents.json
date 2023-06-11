@@ -16,6 +16,11 @@
       "response": [""]
     },
     {
+      "tag": "introduction",
+      "patterns": ["what is you name?","who are you","tell me about your self","introduce your self","tell me who you are"],
+      "response": [""]
+    },
+    {
       "tag": "show_todo",
       "patterns": ["show to do","what is on my to do","where is my to do"],
       "response": [""]

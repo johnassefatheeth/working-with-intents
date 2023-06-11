@@ -119,6 +119,10 @@ def tell_date():
     speaker.runAndWait()
     print(current_date)
 
+def intro():
+    speaker.say("my name is sophi, I am an AI programed to assist you in your day to day life by my developers mahiber gfuan")
+    speaker.runAndWait()
+
 def wikip():
     speaker.say("what topic would you like to ask me")
     speaker.runAndWait()
