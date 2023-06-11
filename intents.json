@@ -36,8 +36,8 @@
       "response": [""]
     },
     {
-      "tag": "camera",
-      "patterns": ["open camera","start camera","camera app"],
+      "tag": "wiki",
+      "patterns": ["tell me about","what is","explain","who is","i want to ask you","i want you tell me about"],
       "response": [""]
     },
     {

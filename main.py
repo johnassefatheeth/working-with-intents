@@ -27,6 +27,7 @@ def create_note():
 
 def creatingthenote():
 
+    global recognizer
     done = False
 
     while not done:
@@ -37,6 +38,7 @@ def creatingthenote():
 
                 note = recognizer.recognize_google(audios)
                 note = note.lower()
+                print(note)
 
                 speaker.say("choose a filename")
                 speaker.runAndWait()
@@ -46,6 +48,7 @@ def creatingthenote():
 
                 filename = recognizer.recognize_google(audios)
                 filename = filename.lower()
+                print(filename)
 
             with open(filename, 'w') as f:
                 f.write(note)
@@ -75,6 +78,8 @@ def to_do():
                 item = recognizer.recognize_google(audio2)
                 item = item.lower()
 
+                print(item)
+
                 todo_list.append(item)
                 done = True
 
@@ -95,18 +100,25 @@ def show_to_do():
 
 
 def hello():
-    speaker.say("what can i help you with")
+    speaker.say("hello to you too what can i help you with")
     speaker.runAndWait()
 
 def tell_time():
     current_time = datetime.datetime.now().strftime('%H:%M:%S')
     speaker.say(f"the time is now {current_time}")
     speaker.runAndWait()
+    print(current_time)
 
 def tell_date():
     current_date = date.today().strftime("%Y-%m-%d")
     speaker.say(f"today is {current_date}")
     speaker.runAndWait()
+    print(current_date)
+
+def wikip():
+    speaker.say("what topic would you like to ask me")
+    speaker.runAndWait()
+
 
 def sets_alarm():
     global recognizer
@@ -131,42 +143,37 @@ def sets_alarm():
 
         sets_alarm(ttime)
 
-    def set_alarm(alarm_time):
-        speaker.say("what would you like to here when the alarm strikes")
-        speaker.runAndWait()
+def set_alarm(alarm_time):
+    global recognizer
+    speaker.say("what would you like to here when the alarm strikes")
+    speaker.runAndWait()
 
-        done = False
+    done = False
 
-        while not done:
-            try:
-                with speech_recognition.Microphone() as mic:
-                    recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                    audios = recognizer.listen(mic)
+    while not done:
+        try:
+            with speech_recognition.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audios = recognizer.listen(mic)
 
-                    mesage = recognizer.recognize_google(audios)
-                    mesage = mesage.lower()
+                mesage = recognizer.recognize_google(audios)
+                mesage = mesage.lower()
 
-            except speech_recognition.UnknownValueError:
-                recognizer = speech_recognition.Recognizer()
-                speaker.say("come again please")
-                speaker.runAndWait()
-        while True:
-            current_time = time.strftime('%I:%M:%S %p')  # Get the current time as a string in 12-hour format
-            if current_time == alarm_time:
-                speaker.say(mesage)
-                break
-            time.sleep(1)
-
-    # Set the alarm time (in 12-hour format)
-    alarm_time = "03:01:00 PM"
-
-    # Call the set_alarm function with the desired alarm time
-    set_alarm(alarm_time)
+        except speech_recognition.UnknownValueError:
+            recognizer = speech_recognition.Recognizer()
+            speaker.say("come again please")
+            speaker.runAndWait()
+    while True:
+        current_time = time.strftime('%I:%M:%S %p')  # Get the current time as a string in 12-hour format
+        if current_time == alarm_time:
+            speaker.say(mesage)
+            break
+        time.sleep(1)
 
 def exitt():
     speaker.say("goodbye?")
     speaker.runAndWait()
-    #sys.exit(0)
+    sys.exit(0)
 
 
 mappings = {
@@ -194,7 +201,7 @@ while True:
 
             message = recognizer.recognize_google(audio)
             message = message.lower()
-
+            print(message)
         assistant.request(message)
 
     except speech_recognition.UnknownValueError:
