@@ -7,6 +7,10 @@ from datetime import datetime
 from datetime import date
 import datetime
 import time
+import wikipediaapi
+
+# Create an instance of WikipediaAPI
+wiki_wiki = wikipediaapi.Wikipedia('en')
 
 recognizer = speech_recognition.Recognizer()
 
@@ -118,6 +122,32 @@ def tell_date():
 def wikip():
     speaker.say("what topic would you like to ask me")
     speaker.runAndWait()
+    searchw()
+
+
+def searchw():
+    global recognizer
+    done = False
+    while not done:
+        try:
+            with speech_recognition.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audio = recognizer.listen(mic)
+
+                topic = recognizer.recognize_google(audio)
+                speaker.say(topic)
+
+                search_results = wiki_wiki.page(topic)
+
+                if search_results.exists():
+                    speaker.say(search_results.summary[0:200])
+                else:
+                    speaker.say("Sorry but i don't know about that.")
+                done = True
+
+        except speech_recognition.UnknownValueError:
+            print("say it again")
+            recognizer = speech_recognition.Recognizer()
 
 
 def sets_alarm():
@@ -184,6 +214,7 @@ mappings = {
     "time": tell_time,
     "date": tell_date,
     "set_alarm":sets_alarm,
+    "wiki": wikip,
     "goodbye": exitt
 }
 
