@@ -8,6 +8,12 @@ from datetime import date
 import datetime
 import time
 import wikipediaapi
+import streamlit as st
+
+
+st.set_page_config(
+    page_title="just test"
+)
 
 # Create an instance of WikipediaAPI
 wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -21,10 +27,15 @@ speaker.setProperty('voice', voices[1].id)
 
 todo_list = ['go home', 'go dorm', 'record video']
 
+def display_to_sc(word,sayer):
+    st.text(sayer+':'+word)
+
+
 
 def create_note():
     global recognizer
 
+    display_to_sc("what should i write on your note?","tejitu")
     speaker.say("what should i write on your note?")
     speaker.runAndWait()
     creatingthenote()
@@ -42,8 +53,9 @@ def creatingthenote():
 
                 note = recognizer.recognize_google(audios)
                 note = note.lower()
-                print(note)
+                display_to_sc(note,"you")
 
+                display_to_sc("choose a filename","tejitu")
                 speaker.say("choose a filename")
                 speaker.runAndWait()
 
@@ -52,15 +64,18 @@ def creatingthenote():
 
                 filename = recognizer.recognize_google(audios)
                 filename = filename.lower()
-                print(filename)
+                display_to_sc(filename,"you")
 
             with open(filename, 'w') as f:
                 f.write(note)
                 done = True
+                display_to_sc(f"successfully opened file with the name {filename}","tejitu")
+
                 speaker.say(f"successfully opened file with the name {filename}")
                 speaker.runAndWait()
         except speech_recognition.UnknownValueError:
             recognizer = speech_recognition.Recognizer()
+            display_to_sc("come again?","tejitu")
             speaker.say("come again?")
             speaker.runAndWait()
 
