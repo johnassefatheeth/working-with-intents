@@ -36,13 +36,23 @@
       "response": [""]
     },
     {
-      "tag": "set_alarm",
-      "patterns": ["i want you to set an alarm","set alarm","schedule an alarm","alarm me","set reminder","remind me"],
+      "tag": "wiki",
+      "patterns": ["tell me about","what is","explain","who is","i want to ask you","i want you tell me about"],
       "response": [""]
     },
     {
-      "tag": "wiki",
-      "patterns": ["tell me about","what is","explain","who is","i want to ask you","i want you tell me about"],
+      "tag": "browse",
+      "patterns": ["can you browse","i want you to search","search for","look the internet for","open a browser","look up the internet","search online","search google"],
+      "response": [""]
+    },
+    {
+      "tag": "locate",
+      "patterns": ["look for a place","locate","where is","where does","find"],
+      "response": [""]
+    },
+    {
+      "tag": "ytply",
+      "patterns": ["play video","open youtube","play online","search video"],
       "response": [""]
     },
     {

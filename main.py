@@ -7,13 +7,8 @@ from datetime import datetime
 from datetime import date
 import datetime
 import time
+import webbrowser
 import wikipediaapi
-import streamlit as st
-
-
-st.set_page_config(
-    page_title="just test"
-)
 
 # Create an instance of WikipediaAPI
 wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -130,6 +125,29 @@ def intro():
     speaker.say("my name is sophi, I am an AI programed to assist you in your day to day life by my developers mahiber gfuan")
     speaker.runAndWait()
 
+def browse():
+    speaker.say("what topic would you like search for")
+    speaker.runAndWait()
+    global recognizer
+    done = False
+    while not done:
+        try:
+            with speech_recognition.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audio = recognizer.listen(mic)
+                topic = recognizer.recognize_google(audio)
+                speaker.say(topic)
+
+                url='https://google.com/search?q='+topic
+                webbrowser.get().open(url)
+
+
+
+        except speech_recognition.UnknownValueError:
+            print("say it again please")
+            recognizer = speech_recognition.Recognizer()
+
+
 def wikip():
     speaker.say("what topic would you like to ask me")
     speaker.runAndWait()
@@ -144,72 +162,21 @@ def searchw():
             with speech_recognition.Microphone() as mic:
                 recognizer.adjust_for_ambient_noise(mic, duration=0.2)
                 audio = recognizer.listen(mic)
-
                 topic = recognizer.recognize_google(audio)
                 speaker.say(topic)
 
                 search_results = wiki_wiki.page(topic)
 
                 if search_results.exists():
-                    speaker.say(search_results.summary[0:200])
+                    speaker.say(search_results.summary[0:300])
                 else:
                     speaker.say("Sorry but i don't know about that.")
                 done = True
 
         except speech_recognition.UnknownValueError:
-            print("say it again")
+            print("say it again please")
             recognizer = speech_recognition.Recognizer()
 
-
-def sets_alarm():
-    global recognizer
-    speaker.say("what time do you like your alarm to be")
-    speaker.runAndWait()
-
-    done = False
-
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audios = recognizer.listen(mic)
-
-                ttime = recognizer.recognize_google(audios)
-                ttime = ttime.lower()
-
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speaker.say("say it again please?")
-            speaker.runAndWait()
-
-        sets_alarm(ttime)
-
-def set_alarm(alarm_time):
-    global recognizer
-    speaker.say("what would you like to here when the alarm strikes")
-    speaker.runAndWait()
-
-    done = False
-
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audios = recognizer.listen(mic)
-
-                mesage = recognizer.recognize_google(audios)
-                mesage = mesage.lower()
-
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speaker.say("come again please")
-            speaker.runAndWait()
-    while True:
-        current_time = time.strftime('%I:%M:%S %p')  # Get the current time as a string in 12-hour format
-        if current_time == alarm_time:
-            speaker.say(mesage)
-            break
-        time.sleep(1)
 
 def exitt():
     speaker.say("goodbye?")
@@ -224,7 +191,6 @@ mappings = {
     "show_todo": show_to_do,
     "time": tell_time,
     "date": tell_date,
-    "set_alarm":sets_alarm,
     "introduction":intro,
     "wiki": wikip,
     "goodbye": exitt
