@@ -9,6 +9,7 @@ import datetime
 import time
 import webbrowser
 import wikipediaapi
+import pywhatkit
 
 # Create an instance of WikipediaAPI
 wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -22,165 +23,113 @@ speaker.setProperty('voice', voices[1].id)
 
 todo_list = ['go home', 'go dorm', 'record video']
 
+def hear():
+    global recognizer
+    while True:
+        try:
+            with speech_recognition.Microphone() as mic:
+                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
+                audio = recognizer.listen(mic)
+                word = recognizer.recognize_google(audio)
+                speaker.say(word)
+                return word
+
+        except speech_recognition.UnknownValueError:
+            print("what did you say")
+            recognizer = speech_recognition.Recognizer()
+
+def say(key):
+    speaker.say(key)
+    speaker.runAndWait()
 
 
 def create_note():
     global recognizer
 
-    speaker.say("what should i write on your note?")
-    speaker.runAndWait()
-    creatingthenote()
-
-def creatingthenote():
-
-    global recognizer
-    done = False
-
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audios = recognizer.listen(mic)
-
-                note = recognizer.recognize_google(audios)
-                note = note.lower()
-                print(note)
-
-                speaker.say("choose a filename")
-                speaker.runAndWait()
-
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audios = recognizer.listen(mic)
-
-                filename = recognizer.recognize_google(audios)
-                filename = filename.lower()
-                print(filename)
-
-            with open(filename, 'w') as f:
-                f.write(note)
-                done = True
-                speaker.say(f"successfully opened file with the name {filename}")
-                speaker.runAndWait()
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speaker.say("come again?")
-            speaker.runAndWait()
+    say("what should i write on your note?")
+    note = hear()
+    say("choose a filename")
+    filename = hear()
+    with open(filename, 'w') as f:
+        f.write(note)
+        say(f"successfully opened file with the name {filename}")
 
 
 def to_do():
     global recognizer
 
-    speaker.say("what would you like to add?")
-    speaker.runAndWait()
+    say("what would you like to add?")
 
-    done = False
+    item=hear()
+    todo_list.append(item)
 
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audio2 = recognizer.listen(mic)
-
-                item = recognizer.recognize_google(audio2)
-                item = item.lower()
-
-                print(item)
-
-                todo_list.append(item)
-                done = True
-
-                speaker.say(f"{item} added to your list!")
-                speaker.runAndWait()
-
-        except speech_recognition.UnknownValueError:
-            recognizer = speech_recognition.Recognizer()
-            speaker.say("come again please")
-            speaker.runAndWait()
+    say(f"{item} added to your list!")
 
 
 def show_to_do():
-    speaker.say("the list is as follows")
+    say("the list is as follows")
     for item in todo_list:
-        speaker.say(item)
-    speaker.runAndWait()
+        say(item)
 
 
 def hello():
-    speaker.say("hello to you too what can i help you with")
-    speaker.runAndWait()
+    say("hello to you too sir, what can i help you with?")
 
 def tell_time():
     current_time = datetime.datetime.now().strftime('%H:%M:%S')
-    speaker.say(f"the time is now {current_time}")
-    speaker.runAndWait()
+    say(f"the time is now {current_time}")
     print(current_time)
 
 def tell_date():
     current_date = date.today().strftime("%Y-%m-%d")
-    speaker.say(f"today is {current_date}")
-    speaker.runAndWait()
+    say(f"today is {current_date}")
     print(current_date)
 
 def intro():
-    speaker.say("my name is sophi, I am an AI programed to assist you in your day to day life by my developers mahiber gfuan")
-    speaker.runAndWait()
+    say("my name is sophi, I am an AI programed to assist you in your day to day life by my developers mahibere gfuan")
 
 def browse():
-    speaker.say("what topic would you like search for")
-    speaker.runAndWait()
-    global recognizer
-    done = False
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audio = recognizer.listen(mic)
-                topic = recognizer.recognize_google(audio)
-                speaker.say(topic)
+    say("what topic would you like search for")
 
-                url='https://google.com/search?q='+topic
-                webbrowser.get().open(url)
+    topic = hear()
+
+    url = 'https://google.com/search?q='+topic
+    webbrowser.get().open(url)
+
+    say("here is your search")
+
+def locate():
+    say("what place should i locate")
+
+    place = hear()
+
+    url = 'https://google.nl/maps/place/' + place +'/&amp;'
+    webbrowser.get().open(url)
 
 
 
-        except speech_recognition.UnknownValueError:
-            print("say it again please")
-            recognizer = speech_recognition.Recognizer()
+def plyyt():
+    say("what video do want to play")
+
+    word = hear()
+
+    pywhatkit.playonyt(word)
 
 
 def wikip():
-    speaker.say("what topic would you like to ask me")
-    speaker.runAndWait()
-    searchw()
+    say("what topic would you like to ask me")
 
+    topic = hear()
+    search_results = wiki_wiki.page(topic)
 
-def searchw():
-    global recognizer
-    done = False
-    while not done:
-        try:
-            with speech_recognition.Microphone() as mic:
-                recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-                audio = recognizer.listen(mic)
-                topic = recognizer.recognize_google(audio)
-                speaker.say(topic)
-
-                search_results = wiki_wiki.page(topic)
-
-                if search_results.exists():
-                    speaker.say(search_results.summary[0:300])
-                else:
-                    speaker.say("Sorry but i don't know about that.")
-                done = True
-
-        except speech_recognition.UnknownValueError:
-            print("say it again please")
-            recognizer = speech_recognition.Recognizer()
+    if search_results.exists():
+        speaker.say(search_results.summary[0:300])
+    else:
+        speaker.say(f"Sorry but i don't know about about{topic}.")
 
 
 def exitt():
-    speaker.say("goodbye?")
-    speaker.runAndWait()
+    say("goodbye?")
     sys.exit(0)
 
 
@@ -199,19 +148,12 @@ mappings = {
 assistant = GenericAssistant('intents.json', intent_methods=mappings)
 assistant.train_model()
 
-
 assistant.save_model()
+assistant.load_model()
 
 while True:
-    try:
-        with speech_recognition.Microphone() as mic:
-            recognizer.adjust_for_ambient_noise(mic, duration=0.2)
-            audio = recognizer.listen(mic)
+    message = hear()
+    message = message.lower()
+    print(message)
+    assistant.request(message)
 
-            message = recognizer.recognize_google(audio)
-            message = message.lower()
-            print(message)
-        assistant.request(message)
-
-    except speech_recognition.UnknownValueError:
-        recognizer = speech_recognition.Recognizer()
