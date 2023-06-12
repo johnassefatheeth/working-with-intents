@@ -10,6 +10,9 @@ import time
 import webbrowser
 import wikipediaapi
 import pywhatkit
+import tkinter as tk
+from tkinter import scrolledtext
+import threading
 
 # Create an instance of WikipediaAPI
 wiki_wiki = wikipediaapi.Wikipedia('en')
@@ -23,6 +26,12 @@ speaker.setProperty('voice', voices[1].id)
 
 todo_list = ['go home', 'go dorm', 'record video']
 
+
+def update_gui(user_command, program_reply):
+    text_widget.insert(tk.END, f"You: {user_command}\n")
+    text_widget.insert(tk.END, f"Sophi: {program_reply}\n")
+    text_widget.see(tk.END)
+
 def hear():
     global recognizer
     while True:
@@ -30,8 +39,9 @@ def hear():
             with speech_recognition.Microphone() as mic:
                 recognizer.adjust_for_ambient_noise(mic, duration=0.2)
                 audio = recognizer.listen(mic)
+                update_gui("", "listening")
                 word = recognizer.recognize_google(audio)
-                speaker.say(word)
+                update_gui(word, "")  # Update the GUI with the user's command
                 return word
 
         except speech_recognition.UnknownValueError:
@@ -41,7 +51,17 @@ def hear():
 def say(key):
     speaker.say(key)
     speaker.runAndWait()
+    update_gui("", key)
 
+def create_gui():
+    global text_widget
+    root = tk.Tk()
+    root.title("Voice Interaction GUI")
+
+    text_widget = scrolledtext.ScrolledText(root, wrap=tk.WORD)
+    text_widget.pack(expand=True, fill=tk.BOTH)
+
+    root.mainloop()
 
 def create_note():
     global recognizer
@@ -151,9 +171,19 @@ assistant.train_model()
 assistant.save_model()
 assistant.load_model()
 
-while True:
-    message = hear()
-    message = message.lower()
-    print(message)
-    assistant.request(message)
+
+def main():
+    gui_thread = threading.Thread(target=create_gui)
+    gui_thread.start()
+
+    assistant.load_model()
+
+    while True:
+        message = hear()
+        message = message.lower()
+        print(message)
+        assistant.request(message)
+
+if __name__ == "__main__":
+    main()
 
