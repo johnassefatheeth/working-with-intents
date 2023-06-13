@@ -14,13 +14,12 @@ import tkinter as tk
 from tkinter import scrolledtext
 import threading
 
-# Create an instance of WikipediaAPI
 wiki_wiki = wikipediaapi.Wikipedia('en')
 
 recognizer = speech_recognition.Recognizer()
 
 speaker = pyttsx3.init()
-speaker.setProperty('rate', 150)
+speaker.setProperty('rate', 120)
 voices = speaker.getProperty('voices')
 speaker.setProperty('voice', voices[1].id)
 
