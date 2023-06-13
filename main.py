@@ -34,6 +34,7 @@ def update_gui(user_command, program_reply):
 
 def hear():
     global recognizer
+    global user
     while True:
         try:
             with speech_recognition.Microphone() as mic:
@@ -41,11 +42,11 @@ def hear():
                 audio = recognizer.listen(mic)
                 update_gui("", "listening")
                 word = recognizer.recognize_google(audio)
-                update_gui(word, "")  # Update the GUI with the user's command
+                update_gui(word, "")
                 return word
 
         except speech_recognition.UnknownValueError:
-            print("what did you say")
+            say(f"I am sorry{user}!I don't understand")
             recognizer = speech_recognition.Recognizer()
 
 def say(key):
@@ -74,7 +75,6 @@ def create_note():
         f.write(note)
         say(f"successfully opened file with the name {filename}")
 
-
 def to_do():
     global recognizer
 
@@ -85,15 +85,13 @@ def to_do():
 
     say(f"{item} added to your list!")
 
-
 def show_to_do():
     say("the list is as follows")
     for item in todo_list:
         say(item)
-
-
 def hello():
-    say("hello to you too sir, what can i help you with?")
+    global user
+    say(f"hello to you too {user}, what can i help you with?")
 
 def tell_time():
     current_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -106,17 +104,17 @@ def tell_date():
     print(current_date)
 
 def intro():
-    say("my name is sophi, I am an AI programed to assist you in your day to day life by my developers mahibere gfuan")
+    say("my name is Sophi, I am an AI programed to assist you in your day to day life by my developers Group 9")
 
 def browse():
-    say("what topic would you like search for")
+    say(f"what topic would would you like search for{user}")
 
     topic = hear()
 
     url = 'https://google.com/search?q='+topic
     webbrowser.get().open(url)
 
-    say("here is your search")
+    say(f"here is what I found {user}")
 
 def locate():
     say("what place should i locate")
@@ -126,7 +124,7 @@ def locate():
     url = 'https://google.nl/maps/place/' + place +'/&amp;'
     webbrowser.get().open(url)
 
-
+    say(f"here is the {place} I found , {user}")
 
 def plyyt():
     say("what video do want to play")
@@ -134,8 +132,6 @@ def plyyt():
     word = hear()
 
     pywhatkit.playonyt(word)
-
-
 def wikip():
     say("what topic would you like to ask me")
 
@@ -143,7 +139,7 @@ def wikip():
     search_results = wiki_wiki.page(topic)
 
     if search_results.exists():
-        speaker.say(search_results.summary[0:300])
+        say(search_results.summary[0:300])
     else:
         speaker.say(f"Sorry but i don't know about about{topic}.")
 
@@ -161,6 +157,9 @@ mappings = {
     "time": tell_time,
     "date": tell_date,
     "introduction":intro,
+    "browse":browse,
+    "locate":locate,
+    "ytply":plyyt,
     "wiki": wikip,
     "goodbye": exitt
 }
@@ -171,7 +170,10 @@ assistant.train_model()
 assistant.save_model()
 assistant.load_model()
 
-
+say("for better experience can you please share your name")
+user = hear()
+say(f"thank you {user}")
+intro()
 def main():
     gui_thread = threading.Thread(target=create_gui)
     gui_thread.start()
